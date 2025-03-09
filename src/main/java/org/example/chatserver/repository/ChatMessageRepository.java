@@ -9,9 +9,9 @@ import java.util.List;
 @Repository
 public interface ChatMessageRepository extends JpaRepository<ChatMessage, Long> {
 
-    // ✅ Example custom query: Find all messages from a specific sender
+    //  Example custom query: Find all messages from a specific sender
     List<ChatMessage> findBySender(String sender);
 
-    // ✅ Example: Find all messages containing specific text
+    //  Example: Find all messages containing specific text
     List<ChatMessage> findByContentContaining(String keyword);
 }
