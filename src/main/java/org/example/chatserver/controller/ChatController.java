@@ -1,14 +1,18 @@
 package org.example.chatserver.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.chatserver.model.ChatMessage;
 import org.example.chatserver.model.User;
 import org.example.chatserver.service.AuthService;
 import org.example.chatserver.service.ChatService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,17 +39,29 @@ public class ChatController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<Map<String, String>> auth(@RequestBody User user) {
-        Map<String, String> response = new HashMap<>();
+    public ResponseEntity<Map<String, String>> auth(@RequestBody User user, HttpServletResponse response) {
+        Map<String, String> result = new HashMap<>();
 
         try {
             String token = authService.login(user.getUsername(), user.getPassword());
-            response.put("message", "Login successful");
-            response.put("token", token);
-            return ResponseEntity.ok(response);
+
+            //  Use Spring's ResponseCookie
+            ResponseCookie cookie = ResponseCookie.from("token", token)
+                    .httpOnly(true)
+                    .secure(true) // Use HTTPS in production
+                    .path("/")
+                    .maxAge(Duration.ofHours(1))
+                    .sameSite("Lax")
+                    .build();
+
+            response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+
+            result.put("message", "Login successful");
+            return ResponseEntity.ok(result);
+
         } catch (Exception e) {
-            response.put("message", "Invalid username or password");
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+            result.put("message", "Invalid username or password");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
     }
 

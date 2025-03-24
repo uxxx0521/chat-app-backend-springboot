@@ -1,15 +1,16 @@
 package org.example.chatserver.model;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.Id;
+import lombok.*;
 
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
 public class ChatMessage {
 
 
@@ -21,7 +22,6 @@ public class ChatMessage {
     private String content;
     private String timestamp;
 
-    public ChatMessage() {}
 
     public ChatMessage(String sender, String content, String timestamp) {
         this.sender = sender;
