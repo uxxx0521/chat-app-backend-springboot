@@ -21,6 +21,7 @@ public class ChatService {
     private BCryptPasswordEncoder passwordEncoder;
 
     public void saveMessage(String sender, String content, String timestamp) {
+        System.out.println("💾 Saving message from " + sender + ": " + content + " at " + timestamp);
         chatMessageRepository.save(new ChatMessage(sender, content, timestamp));
     }
 

@@ -19,7 +19,7 @@ import java.util.Map;
 
 
 @RestController
-@RequestMapping("/chatapi")
+@RequestMapping("/chatapi/api")
 public class ChatController {
 
     @Autowired
@@ -61,6 +61,7 @@ public class ChatController {
 
         } catch (Exception e) {
             result.put("message", "Invalid username or password");
+
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(result);
         }
     }
@@ -77,5 +78,6 @@ public class ChatController {
         }
 
     }
+
 
 }

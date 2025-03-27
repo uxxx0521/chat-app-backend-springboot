@@ -17,16 +17,12 @@ public class AuthService {
 
     @Autowired
     private AuthenticationManager authenticationManager;
-
     @Autowired
     private JwtUtil jwtUtil;
-
     @Autowired
     private UserDetailsService userDetailsService;
-
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 

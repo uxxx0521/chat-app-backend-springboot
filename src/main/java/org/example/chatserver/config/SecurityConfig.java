@@ -12,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -47,15 +48,18 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+        System.out.println("🔐 [SecurityConfig] Initializing SecurityFilterChain...");
         http
-                .cors(cors -> cors.configurationSource(corsConfigurationSource())) // ✅ Enable CORS
-                .csrf(csrf -> csrf.disable()) // ✅ Disable CSRF for REST APIs
+                .cors(cors -> cors.configurationSource(corsConfigurationSource())) //  Enable CORS
+                .csrf(csrf -> csrf.disable()) //  Disable CSRF for REST APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/chatapi/auth", "/chatapi/register").permitAll() // ✅ Allow register API
+                        .requestMatchers("/chatapi/api/auth", "/chatapi/api/register", "/chatapi/api/messages","/ws/**","/wss/**").permitAll() //  Allow register API
+                        .requestMatchers("/chatapi/api/auth/me").authenticated()
                         .anyRequest().authenticated()
-                )
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); // ✅ Stateless authentication
 
+                )
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)); //  Stateless authentication
+        http.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 

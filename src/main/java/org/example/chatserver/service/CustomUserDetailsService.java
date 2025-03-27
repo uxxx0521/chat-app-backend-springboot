@@ -1,5 +1,6 @@
 package org.example.chatserver.service;
 
+import org.example.chatserver.config.CustomUserDetails;
 import org.example.chatserver.model.User;
 import org.example.chatserver.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,10 +22,14 @@ public class CustomUserDetailsService implements UserDetailsService {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
 
-        return new org.springframework.security.core.userdetails.User(
+        return new CustomUserDetails(
+                user.getId(),
                 user.getUsername(),
+                user.getEmail(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority("ROLE_USER")) // or user.getRoles()
+                user.getNickname(),
+                List.of(new SimpleGrantedAuthority("ROLE_USER"))
+
         );
     }
 }

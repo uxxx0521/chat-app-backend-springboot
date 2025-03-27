@@ -22,8 +22,8 @@ public class Message {
     private Long conversationId;
 
     @ManyToOne
-    @JoinColumn(name = "conversation_id", insertable = false, updatable = false)
-    private Conversation conversation;
+    @JoinColumn(name = "conversation_id", insertable = false, updatable = false) //define foreign key.
+    private Conversation conversation;               //It maps foreign key to target entity's primary key by default.
 
     @Column(name = "sender_id")
     private Long senderId;
