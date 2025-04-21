@@ -93,5 +93,16 @@ public class FriendService {
 
         return ResponseEntity.ok("Friend request accepted.");
     }
+    // 🔹 Reject a friend request from a user (by ID)
+    public ResponseEntity<String> rejectFriendRequest(Long currentUserId, Long requesterId) {
+        Optional<Friend> request = friendRepository.findByUserIdAndFriendId(requesterId, currentUserId);
+
+        if (request.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Friend request not found.");
+        }
+
+        friendRepository.delete(request.get());
+        return ResponseEntity.ok("Friend request rejected.");
+    }
 
 }

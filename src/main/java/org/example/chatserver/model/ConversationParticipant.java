@@ -18,6 +18,11 @@ import java.sql.Timestamp;
 @IdClass(ConversationParticipantId.class)
 public class ConversationParticipant {
 
+    public ConversationParticipant(Long conversationId, Long userId) {
+        this.conversationId = conversationId;
+        this.userId = userId;
+    }
+
     @Id
     @Column(name = "conversation_id")
     private Long conversationId;
@@ -38,3 +43,4 @@ public class ConversationParticipant {
     @Column(name = "joined_at")
     private Timestamp joinedAt;
 }
+

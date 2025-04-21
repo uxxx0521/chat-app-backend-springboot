@@ -1,10 +1,14 @@
 package org.example.chatserver.controller;
 
+import jakarta.servlet.http.HttpServletResponse;
 import org.example.chatserver.config.CustomUserDetails;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -43,6 +47,19 @@ public class AuthController {
         );
 
         return ResponseEntity.ok(Map.of("user", userData));
+    }
+    @PostMapping("/logout")
+    public ResponseEntity<String> logout(HttpServletResponse response) {
+        ResponseCookie cookie = ResponseCookie.from("token", "")
+                .httpOnly(true)
+                .secure(true) // match how it was originally set
+                .path("/")
+                .maxAge(0) // delete immediately
+                .sameSite("Lax")
+                .build();
+
+        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+        return ResponseEntity.ok("Logged out");
     }
 
 }

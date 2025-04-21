@@ -79,5 +79,16 @@ public class FriendController {
 
         return friendService.acceptFriendRequest(currentUser.getId(), friendId);
     }
+    @PostMapping("/reject")
+    public ResponseEntity<String> rejectFriendRequest(
+            @AuthenticationPrincipal CustomUserDetails currentUser,
+            @RequestParam Long friendId) {
+
+        if (currentUser == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Unauthorized");
+        }
+
+        return friendService.rejectFriendRequest(currentUser.getId(), friendId);
+    }
 
 }

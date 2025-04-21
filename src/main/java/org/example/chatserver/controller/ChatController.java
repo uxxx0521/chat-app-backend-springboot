@@ -1,7 +1,6 @@
 package org.example.chatserver.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.example.chatserver.model.ChatMessage;
 import org.example.chatserver.model.User;
 import org.example.chatserver.service.AuthService;
 import org.example.chatserver.service.ChatService;
@@ -10,11 +9,13 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.time.Duration;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 
@@ -31,12 +32,6 @@ public class ChatController {
         this.chatService = chatService;
     }
 
-
-    //  Get all chat messages
-    @GetMapping("/messages")
-    public List<ChatMessage> getMessages() {
-        return chatService.getAllMessages();
-    }
 
     @PostMapping("/auth")
     public ResponseEntity<Map<String, String>> auth(@RequestBody User user, HttpServletResponse response) {

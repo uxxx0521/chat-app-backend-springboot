@@ -1,10 +1,8 @@
 package org.example.chatserver.service;
 
-import org.example.chatserver.model.ChatMessage;
-import org.example.chatserver.repository.ChatMessageRepository;
-import org.example.chatserver.repository.UserRepository;
+import org.example.chatserver.model.Message;
+import org.example.chatserver.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -12,21 +10,15 @@ import java.util.List;
 @Service
 public class ChatService {
 
+    @Autowired
+    private MessageRepository messageRepository;
 
-    @Autowired
-    private ChatMessageRepository chatMessageRepository;
-    @Autowired
-    private UserRepository userRepository;
-    @Autowired
-    private BCryptPasswordEncoder passwordEncoder;
-
-    public void saveMessage(String sender, String content, String timestamp) {
-        System.out.println("💾 Saving message from " + sender + ": " + content + " at " + timestamp);
-        chatMessageRepository.save(new ChatMessage(sender, content, timestamp));
+    public Message saveMessage(Message message) {
+        // You can set timestamps or defaults here if needed
+        return messageRepository.save(message);
     }
 
-    public List<ChatMessage> getAllMessages() {
-        return chatMessageRepository.findAll();
+    public List<Message> getAllMessages() {
+        return messageRepository.findAll();
     }
-
 }
