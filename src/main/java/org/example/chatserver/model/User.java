@@ -30,6 +30,8 @@ public class User {
     private String email;
     private String nickname;
 
+    @Column(name = "profile_image_url", nullable = true)
+    private String profileImageUrl; // (default null if not set)
 
     public User(String username, String password, String email, String nickname) {
         this.username = username;
