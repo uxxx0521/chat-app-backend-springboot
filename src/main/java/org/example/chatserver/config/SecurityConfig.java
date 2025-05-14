@@ -53,8 +53,18 @@ public class SecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource())) //  Enable CORS
                 .csrf(csrf -> csrf.disable()) //  Disable CSRF for REST APIs
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/chatapi/api/auth", "/chatapi/api/register", "/chatapi/api/messages","/ws/**","/wss/**").permitAll() //  Allow register API
-                        .requestMatchers("/chatapi/api/auth/me").authenticated()
+                        .requestMatchers(
+                                "/chatapi/api/auth",
+                                "/chatapi/api/register",
+                                "/chatapi/api/messages/public",
+                                "/ws/**",
+                                "/wss/**"
+                                ).permitAll() //  Allow register API
+                        .requestMatchers(
+                                "/chatapi/api/profile/upload",
+                                "/chatapi/api/profile/update",
+                                "/chatapi/api/profile/delete",
+                                "/chatapi/api/auth/me").authenticated()
                         .anyRequest().authenticated()
 
                 )

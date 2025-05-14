@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @RestController
@@ -39,12 +40,12 @@ public class AuthController {
 
         System.out.println("✅ [/me] Authenticated user: " + userDetails.getUsername());
 
-        Map<String, Object> userData = Map.of(
-                "id", userDetails.getId(),
-                "username", userDetails.getUsername(),
-                "email", userDetails.getEmail(),
-                "nickname", userDetails.getNickname()
-        );
+        Map<String, Object> userData = new HashMap<>();
+        userData.put("id", userDetails.getId());
+        userData.put("username", userDetails.getUsername());
+        userData.put("email", userDetails.getEmail());
+        userData.put("nickname", userDetails.getNickname());
+        userData.put("profileImageUrl", userDetails.getProfileImageUrl());
 
         return ResponseEntity.ok(Map.of("user", userData));
     }
@@ -55,7 +56,7 @@ public class AuthController {
                 .secure(true) // match how it was originally set
                 .path("/")
                 .maxAge(0) // delete immediately
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
 
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());

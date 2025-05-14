@@ -28,6 +28,7 @@ public class CustomUserDetailsService implements UserDetailsService {
                 user.getEmail(),
                 user.getPassword(),
                 user.getNickname(),
+                user.getProfileImageUrl(),
                 List.of(new SimpleGrantedAuthority("ROLE_USER"))
 
         );

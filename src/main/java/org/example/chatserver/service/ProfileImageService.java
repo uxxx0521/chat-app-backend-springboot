@@ -19,14 +19,16 @@ public class ProfileImageService {
     private final AmazonS3 amazonS3;
     private final UserRepository userRepository;
 
-    private final String bucketName = "portfolio-chat-app-profile-images ";
+    private final String bucketName = "portfolio-chat-app-profile-images";
 
     public String uploadProfileImage(MultipartFile file, Long userId, String username) {
         try {
             String key = buildKey(username, file.getOriginalFilename());
             ObjectMetadata metadata = buildMetadata(file);
 
+            System.out.println("🚀 [ProfileImageService] Starting upload to S3: " + key);
             amazonS3.putObject(bucketName, key, file.getInputStream(), metadata);
+            System.out.println("✅ [ProfileImageService] Upload successful, updating user...");
 
             String imageUrl = buildImageUrl(key);
 
